@@ -10,4 +10,4 @@ class Productos (miClaseBase):
     description = Column(String, nullable= True)
     price = Column(Float, nullable= False)
     stock = Column(Integer, nullable = False)
-    is_active = Column(Boolean)
+    is_active = Column(Boolean, default=True, nullable=False)

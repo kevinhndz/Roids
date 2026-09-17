@@ -1,7 +1,7 @@
 from fastapi import FastAPI
+from routers import login  
 
 app = FastAPI()
 
-@app.get("/")
-def home():
-    return {"Message": "Test"}
+
+app.include_router(login.router)

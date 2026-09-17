@@ -30,5 +30,5 @@ def verificar_token(token: str) -> dict:
     
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="SesiOn expirada o token invalido",
+        detail="Sesion expirada o token invalido",
     )

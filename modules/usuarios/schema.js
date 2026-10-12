@@ -30,7 +30,7 @@ const Revisar_JSON_Login = {
   }
 };
 
-module.exports = {
+export {
   Revisar_JSON_Crear_User,
   Revisar_JSON_Editar_User,
   Revisar_JSON_Login

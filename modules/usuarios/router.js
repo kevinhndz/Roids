@@ -1,9 +1,9 @@
-const { UsuarioService } = require('./service');
-const {
+import { UsuarioService } from './service.js';
+import {
   Revisar_JSON_Crear_User,
   Revisar_JSON_Editar_User
-} = require('./schema');
-const { abrir_puerta_bd } = require('../../database/almacen');
+} from './schema.js';
+import { abrir_puerta_bd } from '../../database/almacen.js';
 
 async function router(fastify) {
   fastify.post('/', {
@@ -76,10 +76,10 @@ async function router(fastify) {
     },
     handler: async (request, reply) => {
       const db = abrir_puerta_bd();
-      UsuarioService.eliminar_usuario(db, request.params.user_id);
+      await UsuarioService.eliminar_usuario(db, request.params.user_id);
       return reply.code(204).send();
     }
   });
 }
 
-module.exports = router;
+export default router;

@@ -1,6 +1,6 @@
-const { Revisar_JSON_nueva_tarea, TareaRespuestaDTO } = require('./schema');
-const { TareasService: service } = require('./service');
-const { abrir_puerta_bd } = require('../../database/almacen');
+import { Revisar_JSON_nueva_tarea, TareaRespuestaDTO } from './schema.js';
+import { TareasService as service } from './service.js';
+import { abrir_puerta_bd } from '../../database/almacen.js';
 
 async function router(fastify) {
   fastify.post('/', {
@@ -24,4 +24,4 @@ async function router(fastify) {
   });
 }
 
-module.exports = router;
+export default router;

@@ -32,7 +32,7 @@ const TareaRespuestaDTO = {
   }
 };
 
-module.exports = {
+export {
   Revisar_JSON_nueva_tarea,
   Revisar_JSON_editar_tarea,
   TareaRespuestaDTO

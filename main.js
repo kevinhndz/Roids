@@ -1,16 +1,17 @@
-require('dotenv').config();
-const Fastify = require('fastify');
-const { cerrar_puerta_bd } = require('./database/almacen');
-const usuarios_router = require('./modules/usuarios/router');
-const tareas_router = require('./modules/tareas/router');
+import 'dotenv/config';
+import Fastify from 'fastify';
+import addFormats from 'ajv-formats';
+import { cerrar_puerta_bd } from './database/almacen.js';
+import usuarios_router from './modules/usuarios/router.js';
+import tareas_router from './modules/tareas/router.js';
 
 const app = Fastify({
   logger: process.env.NODE_ENV !== 'test',
-  ajv: { plugins: [require('ajv-formats')] }
+  ajv: { plugins: [addFormats] }
 });
 
 app.addHook('onClose', async () => {
-  cerrar_puerta_bd();
+  await cerrar_puerta_bd();
 });
 
 app.setErrorHandler((error, request, reply) => {
@@ -47,7 +48,7 @@ async function iniciar() {
   await app.listen({ port, host });
 }
 
-if (require.main === module) {
+if (import.meta.main) {
   iniciar().catch(async (error) => {
     app.log.error(error);
     await app.close();
@@ -55,4 +56,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { app, iniciar };
+export { app, iniciar };

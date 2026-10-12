@@ -2,20 +2,39 @@
   "name": "roids-todo-api",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "API To-Do List con Fastify y SQLite",
   "main": "main.js",
   "scripts": {
-    "start": "node main.js",
-    "dev": "node --watch main.js"
+    "start": "prisma migrate deploy && node main.js",
+    "dev": "prisma migrate deploy && node --watch main.js",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:generate": "prisma generate",
+    "postinstall": "prisma generate"
   },
   "engines": {
-    "node": ">=24.15.0"
+    "node": ">=24.12.0"
   },
   "dependencies": {
+    "@prisma/adapter-better-sqlite3": "^7.10.0",
+    "@prisma/client": "^7.10.0",
     "ajv-formats": "^3.0.1",
     "bcryptjs": "^3.0.2",
     "dotenv": "^16.6.1",
     "fastify": "^5.6.2",
     "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "prisma": "^7.10.0"
+  },
+  "overrides": {
+    "deepmerge-ts": "^8.0.2",
+    "mysql2": "^3.24.5"
+  },
+  "allowScripts": {
+    "better-sqlite3@12.11.1": true,
+    "prisma@7.10.0": true,
+    "@prisma/engines@7.10.0": true
   }
 }

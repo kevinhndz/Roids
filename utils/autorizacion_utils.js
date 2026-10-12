@@ -1,4 +1,4 @@
-const { verificar_token } = require('./jwt_util');
+import { verificar_token } from './jwt_util.js';
 
 function el_vigilante(request) {
   const token = request.headers.token;
@@ -36,4 +36,4 @@ function permiso_user(request) {
   throw error;
 }
 
-module.exports = { el_vigilante, permiso_admin, permiso_user };
+export { el_vigilante, permiso_admin, permiso_user };

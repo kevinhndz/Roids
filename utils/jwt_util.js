@@ -1,5 +1,5 @@
-require('dotenv').config();
-const jwt = require('jsonwebtoken');
+import 'dotenv/config';
+import jwt from 'jsonwebtoken';
 
 const LLAVE = process.env.LLAVE_SECRETA;
 
@@ -28,4 +28,4 @@ function verificar_token(token) {
   }
 }
 
-module.exports = { LLAVE, crear_token, verificar_token };
+export { LLAVE, crear_token, verificar_token };

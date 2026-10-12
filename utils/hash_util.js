@@ -1,4 +1,4 @@
-const bcrypt = require('bcryptjs');
+import bcrypt from 'bcryptjs';
 
 const motor = bcrypt;
 
@@ -10,4 +10,4 @@ async function verificar_contrasena(password_plano, password_hasheado) {
   return motor.compare(password_plano, password_hasheado);
 }
 
-module.exports = { motor, encriptar_contrasena, verificar_contrasena };
+export { motor, encriptar_contrasena, verificar_contrasena };

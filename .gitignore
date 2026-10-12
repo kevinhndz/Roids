@@ -1,6 +1,7 @@
 venv/
 .venv/
 node_modules/
+generated/
 database/*.sqlite
 database/*.sqlite-shm
 database/*.sqlite-wal

@@ -1,0 +1,38 @@
+generator client {
+  provider               = "prisma-client"
+  output                 = "../generated/prisma"
+  moduleFormat           = "esm"
+  generatedFileExtension = "ts"
+  importFileExtension    = "ts"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Users {
+  id           Int      @id @default(autoincrement())
+  user         String   @unique
+  password     String
+  rol          String   @default("user")
+  name         String
+  email        String   @unique
+  phone_number String?
+  tareas       Tareas[]
+
+  @@map("Users")
+}
+
+model Tareas {
+  id           Int       @id @default(autoincrement())
+  titulo       String
+  descripcion  String?
+  completada   Boolean   @default(false)
+  prioridad    String    @default("Media")
+  fecha_limite DateTime?
+  user_id      Int
+  created_at   DateTime  @default(now())
+  usuario      Users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("Tareas")
+}

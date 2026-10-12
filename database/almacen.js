@@ -1,25 +1,19 @@
-const fs = require('node:fs');
-const path = require('node:path');
-const { DatabaseSync } = require('node:sqlite');
-require('dotenv').config();
+import 'dotenv/config';
+import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
+import { PrismaClient } from '../generated/prisma/client.ts';
 
-const ubicacion = process.env.DATABASE_PATH || './database/roids.sqlite';
-const ubicacionCompleta = ubicacion === ':memory:' ? ubicacion : path.resolve(ubicacion);
+const adapter = new PrismaBetterSqlite3({
+  url: process.env.DATABASE_URL || 'file:./database/roids.sqlite'
+});
 
-if (ubicacion !== ':memory:') {
-  fs.mkdirSync(path.dirname(ubicacionCompleta), { recursive: true });
-}
-
-const motor = new DatabaseSync(ubicacionCompleta, { timeout: 5000 });
-motor.exec('PRAGMA foreign_keys = ON');
-motor.exec(fs.readFileSync(path.join(__dirname, 'esquema.sql'), 'utf8'));
+const motor = new PrismaClient({ adapter });
 
 function abrir_puerta_bd() {
   return motor;
 }
 
-function cerrar_puerta_bd() {
-  motor.close();
+async function cerrar_puerta_bd() {
+  await motor.$disconnect();
 }
 
-module.exports = { motor, abrir_puerta_bd, cerrar_puerta_bd };
+export { motor, abrir_puerta_bd, cerrar_puerta_bd };

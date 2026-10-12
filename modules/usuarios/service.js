@@ -1,6 +1,5 @@
-const { Users } = require('./models');
-const { UsuarioRepository } = require('./repository');
-const { encriptar_contrasena } = require('../../utils/hash_util');
+import { UsuarioRepository } from './repository.js';
+import { encriptar_contrasena } from '../../utils/hash_util.js';
 
 function respuesta_usuario(usuario) {
   return {
@@ -15,27 +14,27 @@ function respuesta_usuario(usuario) {
 
 class UsuarioService {
   static async crear_usuario(db, datos) {
-    if (UsuarioRepository.buscar_por_user(db, datos.user)) {
+    if (await UsuarioRepository.buscar_por_user(db, datos.user)) {
       const error = new Error('El nombre de usuario ya esta en uso.');
       error.statusCode = 400;
       throw error;
     }
 
     const password_encriptada = await encriptar_contrasena(datos.password);
-    const nuevo_usuario = new Users({
+    const nuevo_usuario = {
       user: datos.user,
       password: password_encriptada,
       rol: datos.rol,
       name: datos.name,
       email: datos.email,
       phone_number: datos.phone_number
-    });
+    };
 
-    return respuesta_usuario(UsuarioRepository.crear(db, nuevo_usuario));
+    return respuesta_usuario(await UsuarioRepository.crear(db, nuevo_usuario));
   }
 
-  static obtener_por_id(db, user_id) {
-    const usuario = UsuarioRepository.buscar_por_id(db, user_id);
+  static async obtener_por_id(db, user_id) {
+    const usuario = await UsuarioRepository.buscar_por_id(db, user_id);
 
     if (!usuario) {
       const error = new Error('El usuario no existe.');
@@ -46,12 +45,13 @@ class UsuarioService {
     return respuesta_usuario(usuario);
   }
 
-  static listar_usuarios(db, limite = 100, salto = 0) {
-    return UsuarioRepository.obtener_todos(db, limite, salto).map(respuesta_usuario);
+  static async listar_usuarios(db, limite = 100, salto = 0) {
+    const usuarios = await UsuarioRepository.obtener_todos(db, limite, salto);
+    return usuarios.map(respuesta_usuario);
   }
 
-  static actualizar_usuario(db, user_id, datos) {
-    const usuario = UsuarioRepository.buscar_por_id(db, user_id);
+  static async actualizar_usuario(db, user_id, datos) {
+    const usuario = await UsuarioRepository.buscar_por_id(db, user_id);
 
     if (!usuario) {
       const error = new Error('El usuario no existe.');
@@ -59,11 +59,12 @@ class UsuarioService {
       throw error;
     }
 
-    return respuesta_usuario(UsuarioRepository.actualizar(db, usuario, datos));
+    const usuario_actualizado = await UsuarioRepository.actualizar(db, usuario, datos);
+    return respuesta_usuario(usuario_actualizado);
   }
 
-  static eliminar_usuario(db, user_id) {
-    const usuario = UsuarioRepository.buscar_por_id(db, user_id);
+  static async eliminar_usuario(db, user_id) {
+    const usuario = await UsuarioRepository.buscar_por_id(db, user_id);
 
     if (!usuario) {
       const error = new Error('El usuario no existe.');
@@ -75,4 +76,4 @@ class UsuarioService {
   }
 }
 
-module.exports = { UsuarioService, respuesta_usuario };
+export { UsuarioService, respuesta_usuario };
